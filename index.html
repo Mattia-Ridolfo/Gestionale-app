@@ -330,7 +330,7 @@ var strumenti = [];
 
 var PAYMENT_TYPES = [
   {id:'cooperativa_25', label:'Cooperativa (25%)'},
-  {id:'cooperativa_32', label:'Cooperativa (32%)'},
+  {id:'cooperativa_30', label:'Cooperativa (32%)'},
   {id:'occasionale_sostituto', label:'Occasionale - sostituto (20%)'},
   {id:'occasionale_privato', label:'Occasionale - privato/forfettario (0%)'},
   {id:'netto', label:'Solo Netto'}
@@ -455,7 +455,7 @@ function caricaTutto(){
 function euro(n){ return (isFinite(n)?n:0).toFixed(2); }
 
 function nettoOf(l){
-  var r = {cooperativa_25:25, cooperativa_30:30, occasionale_sostituto:20, occasionale_privato:0, netto:0};
+  var r = {cooperativa_25:25, cooperativa_30:32, occasionale_sostituto:20, occasionale_privato:0, netto:0};
   return l.giorni * l.prezzoGiorno * (1 - r[l.tipoPagamento] / 100);
 }
 
@@ -886,7 +886,7 @@ function renderPagamenti(){
   if(!list.length){ c.innerHTML = '<div class="empty">🎉 Tutti pagati!</div>'; return; }
   var html = '<table><thead><tr><th>Cliente</th><th>Descrizione</th><th>Periodo</th><th style="text-align:right">Lordo</th><th style="text-align:right">Netto</th><th>Tipo</th><th>Azioni</th></tr></thead><tbody>';
   list.forEach(function(l){
-    var r = {cooperativa_25:25, cooperativa_30:30, occasionale_sostituto:20, occasionale_privato:0, netto:0};
+    var r = {cooperativa_25:25, cooperativa_30:32, occasionale_sostituto:20, occasionale_privato:0, netto:0};
     var ritenuta = r[l.tipoPagamento] || 0;
     var tipoLabel = paymentLabel(l.tipoPagamento);
     html += '<tr><td><strong>' + clienteNome(l.clienteId) + '</strong></td><td>' + escapeHtml(l.descrizione) + '</td><td>' + fmtPeriod(l) + '</td><td class="num lordo">€' + euro(lordoOf(l)) + '</td><td class="num net">€' + euro(nettoOf(l)) + '<span style="font-size:9px;color:#888;display:block">rit. ' + ritenuta + '%</span></td><td><span class="tag">' + tipoLabel + '</span></td><td><button class="btn btn-success btn-sm" onclick="ricevuto(' + l.id + ')">💰 Ricevuto</button> <button class="btn btn-danger btn-sm" onclick="eliminaLavoro(' + l.id + ')">🗑</button></td></tr>';
@@ -1306,7 +1306,7 @@ function aggiornaNetto(){
   var g = s && e ? calcolaGiorni(s,e) : 1;
   var p = Number(document.getElementById('fPrezzo').value) || 0;
   var tipo = document.getElementById('fTipoPag').value;
-  var rate = {cooperativa_25:25, cooperativa_30:30, occasionale_sostituto:20, occasionale_privato:0, netto:0};
+  var rate = {cooperativa_25:25, cooperativa_30:32, occasionale_sostituto:20, occasionale_privato:0, netto:0};
   var netto = g * p * (1 - rate[tipo] / 100);
   document.getElementById('fNetPreview').value = netto > 0 ? '€' + euro(netto) : '';
 }
